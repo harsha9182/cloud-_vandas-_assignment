@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Survey Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        form {
+            background: #f4f4f4;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        label {
+            
+            margin-bottom: 5px;
+        }
+        input[type="text"],
+        input[type="date"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        input[type="checkbox"] {
+            margin-right: 5px;
+        }
+        button[type="submit"],
+        button[type="reset"] {
+            padding: 10px 20px;
+            background: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button[type="reset"] {
+            background: #ccc;
+            margin-left: 10px;
+        }
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #fff;
+            padding: 20px;
+            border: 1px solid #ccc;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="surveyForm">
+            <label for="firstName">First Name:</label>
+            <input type="text" id="firstName" pattern="[A-Za-z ]+" title="Only letters and spaces are allowed" required>
+            
+            <label for="lastName">Last Name:</label>
+            <input type="text" id="lastName" pattern="[A-Za-z ]+" title="Only letters and spaces are allowed" required>
+            
+            <label for="dob">Date of Birth:</label>
+            <input type="date" id="dob" required>
+            
+            <label for="country">Country:</label>
+            <select id="country" required>
+                <option value="">Select Country</option>
+                <option value="USA">USA</option>
+                <option value="Canada">Canada</option>
+                <option value="UK">United Kingdom</option>
+                <option value="Australia">Australia</option>
+                <option value="Germany">Germany</option>
+                <option value="France">France</option>
+                <option value="Japan">Japan</option>
+                <option value="China">China</option>
+                <option value="Brazil">Brazil</option>
+                <option value="India">India</option>
+                <option value="South Africa">South Africa</option>
+                <option value="Mexico">Mexico</option>
+                <option value="Russia">Russia</option>
+                <!-- Add more countries -->
+            </select>
+            
+            <label >Gender:</label>
+            <label for="male" class="radio-inline">
+                <input type="radio" name="gender" id="male" checked> male 
+            </label>
+            <label for="female" class="radio-inline">
+                <input type="radio" name="gender" id="female"> female 
+            </label>
+            <label for="other" class="radio-inline">
+                    <input type="radio" name="gender" id="other"> Other
+             </label> <br><br>   
+            
+            <label for="profession">Profession:</label>
+            <input type="text" id="profession" required>
+            
+            <label for="email">Email:</label>
+            <input type="email" id="email" required><br><br>
+            
+            <label for="mobile">Mobile:   </label>
+            <input type="tel" id="mobile" pattern="[0-9]{10}" title="Mobile number should be exactly 10 digits" maxlength="10" required><br><br>
+            
+            <button type="submit" onclick="submitForm()">Submit</button>
+            <button type="reset">Reset</button>
+
+            
+        </form>
+    </div>
+
+    <div id="popup" class="popup">
+        <h2>Survey Submission</h2>
+        <div id="popupContent"></div>
+        <button onclick="closePopup()">Close</button>
+    </div>
+
+    <script>
+        function submitForm() {
+            if (validateForm()) {
+                const firstName = document.getElementById("firstName").value;
+                const lastName = document.getElementById("lastName").value;
+                const dob = document.getElementById("dob").value;
+                const country = document.getElementById("country").value;
+                const genderElement = document.querySelector('input[name="gender"]:checked');
+                const gender = genderElement ? genderElement.nextElementSibling.textContent : 'Not specified';
+                const profession = document.getElementById("profession").value;
+                const email = document.getElementById("email").value;
+                const mobile = document.getElementById("mobile").value;
+
+                const popupContent = `
+                    <p><strong>First Name:</strong> ${firstName}</p>
+                    <p><strong>Last Name:</strong> ${lastName}</p>
+                    <p><strong>Date of Birth:</strong> ${dob}</p>
+                    <p><strong>Country:</strong> ${country}</p>
+                    <p><strong>Gender:</strong> ${gender}</p>
+                    <p><strong>Profession:</strong> ${profession}</p>
+                    <p><strong>Email:</strong> ${email}</p>
+                    <p><strong>Mobile Number:</strong> ${mobile}</p>
+                `;
+
+                const popup = document.getElementById("popup");
+                document.getElementById("popupContent").innerHTML = popupContent;
+                popup.style.display = "block";
+
+                resetForm();
+            }
+        }
+
+        function validateForm() {
+            const email = document.getElementById("email").value;
+            const mobile = document.getElementById("mobile").value;
+
+            // Basic email validation (pattern match)
+            const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+            if (!emailPattern.test(email)) {
+                alert("Please enter a valid email address.");
+                return false;
+            }
+
+            return true;
+        }
+
+        function resetForm() {
+            document.getElementById("surveyForm").reset();
+        }
+
+        function closePopup() {
+            document.getElementById("popup").style.display = "none";
+        }
+    </script>
+</body>
+</html>
